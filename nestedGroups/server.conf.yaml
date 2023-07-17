@@ -1,0 +1,27 @@
+---
+RestAdminListener:
+  port: 7610                # Set the Admin REST API Port for ACE Web UI and Toolkit or -1 to disable. Defaults to 7600.
+  basicAuth: true                                                     # Clients web user name and password will be authenticated when set true
+  webUserPasswordHashAlgorithm: PBKDF2-SHA-512                        # Algorithm used to hash the password for webuser accounts.
+  ldapUrl: 'ldap://localhost:389/ou=people,dc=ace,dc=example,dc=com?cn?sub'  # ldap authentication url
+  ldapBindDn: ldap::adminAuthentication                              # Resource alias or full bind dn
+  ldapBindPassword: ldap::adminAuthentication                        # Resource alias or bind password
+  #  Authorization
+  authorizationEnabled: true     # Clients web user role will be authorized when set true
+  authorizationMode: 'ldap'       # Set authorization mode. Choose 1 of : ldap, file
+  ldapAuthorizeUrl: 'ldap://localhost:389/ou=groups,dc=ace,dc=example,dc=com?cn?sub?(member={{dn}})'  # ldap authentication url
+Security:
+  LdapAuthorizeAttributeToRoleMap:
+    # This "viewer" group contains user2, and also contains the "otherTeam" group with user3 and
+    # user 4, but the LDAP auth code will not pick up the members of the "otherTeam" group
+    'viewer': 'viewRole'
+    # This is needed explicitly in order to include user3 and user4
+    'otherTeam': 'viewRole'
+    # This allows user1 all access
+    'operator': 'adminRole'
+  Permissions:
+    # Set Admin Security Authorization file permissions by web user role using 'read+:write+:execute+' , or 'all+'
+    # '+' grants permission, '-' denies permission
+    # e.g. define the following web user roles 'viewRole' and 'adminRole'
+    viewRole:  'read+:write-:execute-'
+    adminRole: 'all+'
