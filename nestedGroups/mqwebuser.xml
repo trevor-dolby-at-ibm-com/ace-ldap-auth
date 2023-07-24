@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<server>
+  <featureManager>
+      <feature>appSecurity-2.0</feature>
+      <feature>ldapRegistry-3.0</feature>
+      <feature>basicAuthenticationMQ-1.0</feature>
+  </featureManager>
+    
+  <!-- Roles for the MQ Console                                                   -->
+  <enterpriseApplication id='com.ibm.mq.console'>
+    <application-bnd>
+      <security-role name='MQWebAdmin'>
+        <user name='uid=user1,ou=people,dc=ace,dc=example,dc=com'/>
+      </security-role>
+	  <security-role name="MQWebUser">
+		<group name="cn=viewer,o=aceAdmin,ou=groups,dc=ace,dc=example,dc=com"/>
+	  </security-role>
+    </application-bnd>
+  </enterpriseApplication>
+  
+  <!-- LDAP registry configuration                                                -->
+  <ldapRegistry id='ldap'
+      host='localhost'
+      port='389'
+      ignoreCase='true'
+      baseDN='dc=ace,dc=example,dc=com'
+	  bindDN='cn=admin,dc=ace,dc=example,dc=com'
+	  bindPassword='passw0rd'
+	  
+	  recursiveSearch='true'
+
+      certificateMapMode='NOT_SUPPORTED'
+      idsFilters='ibm_dir_server'
+      ldapType='Custom'>
+  </ldapRegistry>
+
+  <ldapEntityType name="Group">
+	<objectClass>groupOfNames</objectClass>
+	<searchBase>o=aceAdmin,ou=groups,dc=ace,dc=example,dc=com</searchBase>
+</ldapEntityType>
+
+  <idsLdapFilterProperties id="ibm_dir_server"
+      userFilter="(&amp;(cn=%v)(objectclass=inetOrgPerson))"
+      groupFilter="(&amp;(cn=%v)(objectclass=groupOfNames))"
+      userIdMap="*:uid" 
+      groupIdMap="*:cn"
+	  groupMemberIdMap="groupOfNames:member">
+  </idsLdapFilterProperties>
+
+  <variable name="httpHost" value="*"/>
+  <variable name="httpsPort" value="9443"/>
+</server>
