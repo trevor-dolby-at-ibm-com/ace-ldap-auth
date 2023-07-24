@@ -12,9 +12,9 @@
       <security-role name='MQWebAdmin'>
         <user name='uid=user1,ou=people,dc=ace,dc=example,dc=com'/>
       </security-role>
-	  <security-role name="MQWebUser">
-		<group name="cn=viewer,o=aceAdmin,ou=groups,dc=ace,dc=example,dc=com"/>
-	  </security-role>
+      <security-role name="MQWebUser">
+        <group name="cn=viewer,o=aceAdmin,ou=groups,dc=ace,dc=example,dc=com"/>
+      </security-role>
     </application-bnd>
   </enterpriseApplication>
   
@@ -23,11 +23,12 @@
       host='localhost'
       port='389'
       ignoreCase='true'
+
       baseDN='dc=ace,dc=example,dc=com'
-	  bindDN='cn=admin,dc=ace,dc=example,dc=com'
-	  bindPassword='passw0rd'
-	  
-	  recursiveSearch='true'
+      bindDN='cn=admin,dc=ace,dc=example,dc=com'
+      bindPassword='passw0rd'
+
+      recursiveSearch='true'
 
       certificateMapMode='NOT_SUPPORTED'
       idsFilters='ibm_dir_server'
@@ -44,7 +45,7 @@
       groupFilter="(&amp;(cn=%v)(objectclass=groupOfNames))"
       userIdMap="*:uid" 
       groupIdMap="*:cn"
-	  groupMemberIdMap="groupOfNames:member">
+      groupMemberIdMap="groupOfNames:member">
   </idsLdapFilterProperties>
 
   <variable name="httpHost" value="*"/>
